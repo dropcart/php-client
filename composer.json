@@ -1,0 +1,28 @@
+{
+  "name": "dropcart/dropcart-php-client",
+  "description": "Use this package to communicate with the Dropcart engine on a PHP server.",
+  "type": "library",
+  "require": {
+    "php": "^7.0",
+    "guzzlehttp/guzzle": "~6.0",
+    "lcobucci/jwt": "^3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit" : "~6.5"
+  },
+  "autoload": {
+    "psr-4" : {
+      "Dropcart\\PhpClient\\" : "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Jason de Ridder",
+      "email": "jason@inktweb.nl"
+    },
+    {
+      "name": "Tom Kriek",
+      "email": "tom@inktweb.nl"
+    }
+  ]
+}
