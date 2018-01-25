@@ -67,7 +67,7 @@ class DropcartClientOptions {
 		'public_key'    => null,
 		'url'           => null,
 
-		'timeout'       => 1.0,
+		'timeout'       => 2.0,
 		'base_uri'      => 'https://rest-api.dropcart.nl',
 		'in_sync'       => true,
 		'cert'          => __DIR__ . '/cacert.pem',

@@ -48,8 +48,8 @@ class Caller {
 	private $query  = [];
 	private $files  = [];
 
-	public function __construct($name = null) {
-		$this->addChain($name);
+	public function __construct($name = null, $arguments = []) {
+		$this->addChain($name, $arguments);
 	}
 
 	public static function __callStatic( $name, $arguments ) {
@@ -115,7 +115,16 @@ class Caller {
 		$string = "";
 		foreach($this->traceMethods as $k => $method)
 		{
-			$string .= ".{$method}[" . implode(',', $this->traceArguments[$k]) . "]";
+			$argumentList = "";
+			foreach($this->traceArguments[$k] as $argument)
+			{
+				if(!is_array($argument))
+					$argumentList .= "," . $argument;
+			}
+			if(strlen($argumentList) > 0)
+				$argumentList = substr($argumentList, 1);
+
+			$string .= ".{$method}[{$argumentList}]";
 		}
 
 		return hash("sha256", $string);
@@ -212,7 +221,15 @@ class Caller {
 				$url .= "/" . $method;
 
 			if(count($arguments) > 0)
-				$url .= "/" . implode("/", $arguments);
+			{
+				foreach($arguments as $arg)
+				{
+					if(!is_array($arg))
+					{
+						$url .= "/" . $arg;
+					}
+				}
+			}
 		}
 
 		if(count($this->query) > 0 && $withQuery)

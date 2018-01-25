@@ -51,8 +51,8 @@ use Psr\Http\Message\ResponseInterface;
  * Class DropcartClient
  * @package Dropcart\PhpClient
  *
- * @method static \Dropcart\PhpClient\Services\Catalog catalog()
- * @method static \Dropcart\PhpClient\Services\Order order()
+ * @method static \Dropcart\PhpClient\Services\Catalog catalog(...$args)
+ * @method static \Dropcart\PhpClient\Services\Order order(...$args)
  *
  * @method static DropcartClient setPublicKey(string $public_key) Sets the overall public key
  * @method static DropcartClient setPrivateKey(string $private_key) Sets the overall private key
@@ -109,7 +109,7 @@ class DropcartClient {
 			return self::options()->get($var, $arguments[0] ?: null);
 		}
 		else {
-			self::$current_call_stack = new Caller($name);
+			self::$current_call_stack = new Caller($name, $arguments);
 			return self::getInstance();
 		}
 	}
@@ -125,14 +125,18 @@ class DropcartClient {
 		}
 		else if($name == 'addParams')
 		{
-			self::$current_call_stack->addParams($arguments);
+			return self::$current_call_stack->addParams($arguments);
 		}
 		elseif($name == 'addParam')
 		{
 			if(!isset($arguments[0]) || !isset($arguments[1]))
 				throw new \InvalidArgumentException("Need a name and a value");
 
-			self::$current_call_stack->addParam($arguments[0], $arguments[1]);
+			return self::$current_call_stack->addParam($arguments[0], $arguments[1]);
+		}
+		elseif($name == 'getUrl')
+		{
+			return self::$current_call_stack->getUrl(self::options()->getBaseUri());
 		}
 		else {
 			return self::getInstance();
@@ -178,6 +182,7 @@ class DropcartClient {
 		$hash       = $request->getHash();
 		$http       =& static::$http;
 
+		// TODO: Add caching
 //		if($cache
 //		   && isset(static::$cache_call_stack[$hash]))
 //		   //&& isset(static::$cache_call_stack[$hash]['result']))
@@ -234,8 +239,8 @@ class DropcartClient {
 			foreach($request->getParams() as $name => $contents)
 			{
 				$options['multipart'][] = [
-					'name'  => $name,
-					'contents' => $contents
+					'name'      => $name,
+					'contents'  => $contents
 				];
 			}
 
@@ -247,8 +252,6 @@ class DropcartClient {
 		}
 
 		// ACTUAL REQUEST
-
-		echo "<h3>PLAY <small>{$hash}</small></h3><p>". $request->getUrl(static::options()->getBaseUri()) ."</p>";
 
 		if(static::options()->getSync(false))
 		{
@@ -282,7 +285,6 @@ class DropcartClient {
 			{
 				// Set result
 				static::setResult($hash, $response);
-				echo "<h1>THEN</h1>";var_dump($response);die();
 				$result->resolve($response);
 
 			}, function (RequestException $e) use ($result, $hash)
@@ -335,6 +337,14 @@ class DropcartClient {
 								->getToken();
 	}
 
+	/**
+	 * Set the result of an request
+	 *
+	 * @param $hash
+	 * @param $result
+	 *
+	 * @return DropcartClient
+	 */
 	public static function setResult($hash, $result)
 	{
 		if(isset(static::$cache_call_stack[$hash]))

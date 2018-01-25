@@ -1,5 +1,5 @@
 {
-  "name": "dropcart/dropcart-php-client",
+  "name": "dropcart/php-client",
   "description": "Use this package to communicate with the Dropcart engine on a PHP server.",
   "type": "library",
   "require": {
