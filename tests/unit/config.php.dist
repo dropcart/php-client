@@ -19,22 +19,15 @@
  *
  * =========================================================
  *
- * File: Order.php
- * Date: 16-01-18 10:28
+ * File: config.php
+ * Date: 06-02-18 10:34
  * Copyright: © [2016 - 2018] Dropcart - All rights reserved.
  * Version: v3.0.0
  *
  * =========================================================
  */
+ 
 
-
-namespace Dropcart\PhpClient\Services;
-
-
-interface Order {
-
-	/**
-	 * @return Rest
-	 */
-	public function order() : Rest;
-}
+return [
+	'base_uri'   => 'http://localhost:9000'
+];

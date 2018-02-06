@@ -36,15 +36,15 @@ interface Catalog {
 	/**
 	 * @return Rest
 	 */
-	public function brands();
+	public function brands() : Rest;
 
 	/**
 	 * @return Rest
 	 */
-	public function categories();
+	public function categories() : Rest;
 
 	/**
 	 * @return Rest
 	 */
-	public function products();
+	public function products() : Rest;
 }

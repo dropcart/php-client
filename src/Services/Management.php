@@ -33,5 +33,34 @@ namespace Dropcart\PhpClient\Services;
 
 interface Management {
 
+	/**
+	 * @return Rest
+	 */
+	public function clients() : Rest;
+
+	/**
+	 * @return Rest
+	 */
+	public function countries() : Rest;
+
+	/**
+	 * @return Rest
+	 */
+	public function couriers() : Rest;
+
+	/**
+	 * @return Rest
+	 */
+	public function organisations() : Rest;
+
+	/**
+	 * @return Rest
+	 */
+	public function stores() : Rest;
+
+	/**
+	 * @return Rest
+	 */
+	public function suppliers() : Rest;
 
 }

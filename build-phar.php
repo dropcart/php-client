@@ -19,22 +19,29 @@
  *
  * =========================================================
  *
- * File: Order.php
- * Date: 16-01-18 10:28
+ * File: build-phar.php
+ * Date: 06-02-18 15:19
  * Copyright: © [2016 - 2018] Dropcart - All rights reserved.
  * Version: v3.0.0
  *
  * =========================================================
  */
+ 
 
+$buildDir = __DIR__ . '/build';
+$srcDir = __DIR__;
 
-namespace Dropcart\PhpClient\Services;
+$force = (isset($argv[1]) && ( $argv[1] == '--force' || $argv[1] == '-f'));
 
-
-interface Order {
-
-	/**
-	 * @return Rest
-	 */
-	public function order() : Rest;
+if(file_exists($buildDir . '/DropcartPhpClient.phar') && !$force)
+{
+	die('Phar exists already. Use -f or --force flag to override.' . "\n");
 }
+unlink($buildDir . '/DropcartPhpClient.phar');
+$phar = new Phar($buildDir . '/DropcartPhpClient.phar',
+				FilesystemIterator::CURRENT_AS_FILEINFO |
+						FilesystemIterator::KEY_AS_FILENAME, "dropcart-php-client");
+
+$phar->buildFromDirectory($srcDir, '[src|vendor]');
+
+$phar->compressFiles(Phar::GZ);

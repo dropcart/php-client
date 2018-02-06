@@ -53,6 +53,8 @@ use Psr\Http\Message\ResponseInterface;
  *
  * @method static \Dropcart\PhpClient\Services\Catalog catalog(...$args)
  * @method static \Dropcart\PhpClient\Services\Order order(...$args)
+ * @method static \Dropcart\PhpClient\Services\Management management(...$args)
+ * @method static \Dropcart\PhpClient\Services\Me me(...$args)
  *
  * @method static DropcartClient setPublicKey(string $public_key) Sets the overall public key
  * @method static DropcartClient setPrivateKey(string $private_key) Sets the overall private key
@@ -85,7 +87,7 @@ class DropcartClient {
 	private static $cache_call_stack = [];
 
 
-	const CALL_ENDPOINTS = ['get', 'post', 'put', 'options', 'patch', 'delete'];
+	const CALL_ENDPOINTS = ['get', 'post', 'put', 'patch', 'delete'];
 
 
 	private function __construct() {
@@ -178,40 +180,18 @@ class DropcartClient {
 
 		$request    = self::$current_call_stack;
 
-		$cache      = self::options()->getCache(true);
+//		$cache      = self::options()->getCache(true);
 		$hash       = $request->getHash();
 		$http       =& static::$http;
 
 		// TODO: Add caching
-//		if($cache
-//		   && isset(static::$cache_call_stack[$hash]))
-//		   //&& isset(static::$cache_call_stack[$hash]['result']))
-//		{
-//			$cache_request =& static::$cache_call_stack[$hash];
-//
-//			echo "<h3>REPLAY <small>{$hash}</small></h3><p>". $cache_request['call']->getUrl(static::options()->getBaseUri()) ."</p>";
-//			echo $cache_request['call'];
-//
-//			echo "\n--------------\n\n";
-//
-//
-//			if(self::options()->getSync(false))
-//			{
-//				var_dump($cache_request);
-//				return $cache_request['result']->getBody();
-//			} else {
-//				$promise = new FulfilledPromise($cache_request['result']);
-//				return $promise;
-//			}
-//		}
-
 
 		// Add to the cache stack
-		static::$cache_call_stack[$hash] = [
-			'call'      => $request,
-			'requested' => time(),
-			'options'   => static::options()->getAll()
-		];
+//		static::$cache_call_stack[$hash] = [
+//			'call'      => $request,
+//			'requested' => time(),
+//			'options'   => static::options()->getAll()
+//		];
 
 		$base_url   = static::options()->getBaseUri();
 		$url        = $request->getUrl($base_url, false);
@@ -253,46 +233,20 @@ class DropcartClient {
 
 		// ACTUAL REQUEST
 
-		if(static::options()->getSync(false))
-		{
-			// Synchonous request
-			try {
-				$result = $http->request(
-					$request->getHttpMethod(),
-					$url,
-					$options
-				);
-
-			} catch(ClientException $e) {
-				static::removeCache($hash);
-				$result = $e->getResponse();
-			} catch (\Exception $e)
-			{
-				static::removeCache($hash);
-				throw $e;
-			}
-
-		} else {
-			// Asynchonious request
-			$promise = $http->requestAsync(
+		// Synchonous request
+		// TODO: Implement Async native
+		try {
+			$result = $http->request(
 				$request->getHttpMethod(),
 				$url,
 				$options
 			);
 
-			$result = new Promise();
-			$promise->then(function(ResponseInterface $response) use ($result, $hash)
-			{
-				// Set result
-				static::setResult($hash, $response);
-				$result->resolve($response);
-
-			}, function (RequestException $e) use ($result, $hash)
-			{
-				// Remove from cache
-				static::removeCache($hash);
-				$result->reject($e);
-			});
+		} catch(ClientException $e) {
+			$result = $e->getResponse();
+		} catch (\Exception $e)
+		{
+			throw $e;
 		}
 
 		static::setResult($hash, $result);
@@ -326,6 +280,12 @@ class DropcartClient {
 	    {
 		    throw new DropcartClientException("Public and/or private key are not set.");
 	    }
+
+	    if(!isset($_SERVER['HTTP_HOST']))
+	    	$_SERVER['HTTP_HOST'] = gethostname();
+
+		if(!isset($_SERVER['REQUEST_URI']))
+			$_SERVER['REQUEST_URI'] = '/';
 
 	    $url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 

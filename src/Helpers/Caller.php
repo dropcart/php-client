@@ -31,6 +31,8 @@
 namespace Dropcart\PhpClient\Helpers;
 
 
+use Dropcart\PhpClient\DropcartClientException;
+use Dropcart\PhpClient\Services\Management;
 use function GuzzleHttp\Psr7\build_query;
 
 /**
@@ -44,12 +46,23 @@ class Caller {
 	private $traceMethods   = [];
 	private $traceArguments = [];
 
+	private $serviceReflector;
+	private $contractReflector;
+
 	private $params = [];
 	private $query  = [];
 	private $files  = [];
 
 	public function __construct($name = null, $arguments = []) {
+		$interface = ucfirst($name);
 		$this->addChain($name, $arguments);
+
+		try {
+			$this->serviceReflector = new \ReflectionClass( "Dropcart\\PhpClient\\Services\\{$interface}" );
+		} catch(\ReflectionException $exception)
+		{
+			throw new DropcartClientException("This service [{$interface}] doesn't exists.");
+		}
 	}
 
 	public static function __callStatic( $name, $arguments ) {
@@ -59,15 +72,38 @@ class Caller {
 
 	private function addChain($method, $arguments = [])
 	{
+		if(is_null($this->serviceReflector))
+		{
+			$interface = ucfirst($method);
+			try {
+				$this->serviceReflector = new \ReflectionClass( "Dropcart\\PhpClient\\Services\\{$interface}" );
+			} catch(\ReflectionException $exception)
+			{
+				throw new DropcartClientException("This service [{$interface}] doesn't exists.");
+			}
+		} else
+		{
+			if(is_null($this->contractReflector))
+			{
+				if(!$this->serviceReflector->hasMethod($method))
+					throw new DropcartClientException("Method [{$method}] doesn't exists on '{$this->serviceReflector->getName()}'.");
+
+				$this->contractReflector = new \ReflectionClass($this->serviceReflector->getMethod($method)->getReturnType()->getName());
+			}
+			else {
+				if(!$this->contractReflector->hasMethod($method))
+					throw new DropcartClientException("HTTP method [{$method}] doesn't exist on '{$this->contractReflector->getName()}'.");
+			}
+		}
 
 		$this->traceMethods[] = $method;
 		$this->traceArguments[] = $arguments;
+
+		return $this;
 	}
 
 	public function __call( $name, $arguments ) {
-		$this->addChain($name, $arguments);
-
-		return $this;
+		return $this->addChain($name, $arguments);
 	}
 
 	/**
@@ -88,7 +124,7 @@ class Caller {
 	 *
 	 * @return $this
 	 */
-	public function addParams($array)
+	public function addParams(array $array)
 	{
 		foreach($array as $name => $value)
 		{

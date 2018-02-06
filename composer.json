@@ -2,6 +2,7 @@
   "name": "dropcart/php-client",
   "description": "Use this package to communicate with the Dropcart engine on a PHP server.",
   "type": "library",
+  "license": "MIT",
   "require": {
     "php": "^7.0",
     "guzzlehttp/guzzle": "~6.0",
@@ -14,6 +15,9 @@
     "psr-4" : {
       "Dropcart\\PhpClient\\" : "src/"
     }
+  },
+  "config": {
+
   },
   "authors": [
     {

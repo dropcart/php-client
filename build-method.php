@@ -19,22 +19,46 @@
  *
  * =========================================================
  *
- * File: Order.php
- * Date: 16-01-18 10:28
+ * File: build-method.php
+ * Date: 06-02-18 17:23
  * Copyright: © [2016 - 2018] Dropcart - All rights reserved.
  * Version: v3.0.0
  *
  * =========================================================
  */
+ 
+require __DIR__ . '/vendor/autoload.php';
 
+$w = "# Allowed methods";
 
-namespace Dropcart\PhpClient\Services;
+foreach(scandir(__DIR__ . '/src/Services') as $file)
+{
+	if($file == '.' || $file == '..' || $file == 'Rest.php')
+		continue;
 
+	$fileExp = explode('.', $file);
+	$interface      = $fileExp[0];
+	$interface_lc   = strtolower($interface);
+	$reflection     = new \ReflectionClass("Dropcart\\PhpClient\\Services\\{$interface}");
 
-interface Order {
+	if(!$reflection->isInterface())
+		continue;
 
-	/**
-	 * @return Rest
-	 */
-	public function order() : Rest;
+	$w .= "\n## {$interface}";
+
+	$w .= "\n\Dropcart\PhpClient\DropcartClient::{$interface}()\n";
+	foreach($reflection->getMethods() as $method)
+	{
+		$w .= "\n + \Dropcart\PhpClient\DropcartClient::{$interface}()->{$method->getName()}()";
+		foreach((new ReflectionClass($method->getReturnType()->getName()))->getMethods() as $rm)
+		{
+			$w .= "\n   + ->{$rm->getName()}(...\$args)";
+			//$w .= "\n    {$rm->getDocComment()}";
+		}
+
+	}
+
+	$w .= "\n";
 }
+
+file_put_contents(__DIR__ . '/REST.md', $w);

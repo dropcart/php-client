@@ -50,12 +50,6 @@ use Dropcart\PhpClient\Helpers\Str;
  * @method DropcartClientOptions setBaseUri(string $base_uri) The base URI
  * @method string getBaseUri(string $default = 'https://rest-api.dropcart.nl') The base URI
  *
- * @method DropcartClientOptions setSync(bool $base_uri) The base URI
- * @method string getSync(bool $default = true) Whether the request are synchronous or asynchronous
- *
- * @method DropcartClientOptions setCache(bool $cache_requests) Cache requests?
- * @method string getCache(bool $default = true) Whether the request needs to be cached
- *
  * @method DropcartClientOptions setUrl(string $url) Url where request comes from
  * @method string getUrl(string $default = 'current url')
  */
@@ -69,10 +63,8 @@ class DropcartClientOptions {
 
 		'timeout'       => 2.0,
 		'base_uri'      => 'https://rest-api.dropcart.nl',
-		'in_sync'       => true,
 		'cert'          => __DIR__ . '/cacert.pem',
-		'verify'        => false,
-		'cache'         => true
+		'verify'        => true,
 	];
 
 

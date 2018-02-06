@@ -31,10 +31,10 @@
 namespace Dropcart\PhpClient\Services;
 
 
-interface Order {
+interface Me {
 
 	/**
 	 * @return Rest
 	 */
-	public function order() : Rest;
+	public function organisations() : Rest;
 }
