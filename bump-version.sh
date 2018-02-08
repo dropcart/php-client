@@ -83,6 +83,7 @@ if [ -f VERSION ]; then
 #
 #    fi
     INPUT_STRING=$SUGGESTED_VERSION
+    git remote set-url origin https://$(echo "${GIT_USER}"):$(echo "${GIT_PASS}")@github.com/dropcart/php-client.git
     # Check if your current source is not already tagged by using current hash
     GIT_COMMIT=`git rev-parse HEAD`
     NEEDS_TAG=`git describe --contains $GIT_COMMIT`
