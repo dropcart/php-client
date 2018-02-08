@@ -41,6 +41,8 @@ $zip  = new ZipArchive;
 $return = $zip->open($buildDir . '/DropcartPhpClient.zip', ZipArchive::OVERWRITE | ZipArchive::CREATE);
 
 $zip->addFile(__DIR__ . "/README.md", "README.md");
+$zip->addFile(__DIR__ . "/VERSION", "VERSION");
+$zip->addFile(__DIR__ . "/REST.md", "REST.md");
 $zip->addFile(__DIR__ . "/LICENSE", "LICENSE");
 
 function addRecursivly(&$zip, $folder, $localname)
