@@ -104,7 +104,7 @@ if [ -f VERSION ]; then
     git add CHANGELOG.md VERSION
     git commit -m "Bump version to ${BASE_STRING} → ${INPUT_STRING}."
     tag "${INPUT_STRING}" "${RELEASE_NOTE}"
-    git push origin --tags
+    git push -u origin master --tags
 else
     echo -e "${WARNING_FLAG} Could not find a VERSION file."
     echo -ne "${QUESTION_FLAG} ${CYAN}Do you want to create a version file and start from scratch? [${WHITE}y${CYAN}]: "
@@ -126,7 +126,7 @@ else
         git add VERSION CHANGELOG.md
         git commit -m "Add VERSION and CHANGELOG.md files, Bump version to v0.1.0."
         tag "0.1.0" ${RELEASE_NOTE}
-        git push origin --tags
+        git push -u origin master --tags
     fi
 fi
 
