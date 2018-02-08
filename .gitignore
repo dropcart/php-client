@@ -2,3 +2,4 @@
 /vendor
 /.idea
 /tests/unit/config.php
+.test_results.xml
