@@ -105,7 +105,7 @@ if [ -f VERSION ]; then
     git add CHANGELOG.md VERSION
     git commit -a -m "Bump version to ${BASE_STRING} → ${INPUT_STRING}."
     tag "${INPUT_STRING}" "${RELEASE_NOTE}"
-    git push https://$(echo "${GIT_USER}"):$(echo "${GIT_PASS}")@github.com/dropcart/php-client master --tags
+    git push https://$(echo "${GIT_USER}"):$(echo "${GIT_PASS}")@github.com/dropcart/php-client.git master --tags
 else
     echo -e "${WARNING_FLAG} Could not find a VERSION file."
     echo -ne "${QUESTION_FLAG} ${CYAN}Do you want to create a version file and start from scratch? [${WHITE}y${CYAN}]: "
