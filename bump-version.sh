@@ -77,11 +77,12 @@ if [ -f VERSION ]; then
     echo -e "${NOTICE_FLAG} Latest commit hash: ${WHITE}$LATEST_HASH"
     V_PATCH=$((V_PATCH + 1))
     SUGGESTED_VERSION="$V_MAJOR.$V_MINOR.$V_PATCH"
-    echo -ne "${QUESTION_FLAG} ${CYAN}Enter a version number [${WHITE}$SUGGESTED_VERSION${CYAN}]: "
-    read INPUT_STRING
-    if [ "$INPUT_STRING" = "" ]; then
-        INPUT_STRING=$SUGGESTED_VERSION
-    fi
+    echo -ne "${QUESTION_FLAG} ${CYAN}Enter a version number [${WHITE}$SUGGESTED_VERSION${CYAN}]: y"
+#    read INPUT_STRING
+#    if [ "$INPUT_STRING" = "" ]; then
+#
+#    fi
+    INPUT_STRING=$SUGGESTED_VERSION
     # Check if your current source is not already tagged by using current hash
     GIT_COMMIT=`git rev-parse HEAD`
     NEEDS_TAG=`git describe --contains $GIT_COMMIT`
