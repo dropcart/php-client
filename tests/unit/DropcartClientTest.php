@@ -8,8 +8,7 @@
  * Time: 10:52
  */
 
-#require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../build/DropcartPhpClient.phar';
+require __DIR__ . '/../../vendor/autoload.php';
 
 use Dropcart\PhpClient\DropcartClient;
 use PHPUnit\Framework\TestCase;

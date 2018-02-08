@@ -11,7 +11,7 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="Dropcart Client Tests">
-            <directory>tests/unit/</directory>
+            <file>tests/unit/DropcartClientTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

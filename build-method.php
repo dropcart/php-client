@@ -52,7 +52,7 @@ foreach(scandir(__DIR__ . '/src/Services') as $file)
 		$w .= "\n + \Dropcart\PhpClient\DropcartClient::{$interface}()->{$method->getName()}()";
 		foreach((new ReflectionClass($method->getReturnType()->getName()))->getMethods() as $rm)
 		{
-			$w .= "\n   + ->{$rm->getName()}(...\$args)";
+			$w .= "\n    + ->{$rm->getName()}(...\$args)";
 			//$w .= "\n    {$rm->getDocComment()}";
 		}
 
