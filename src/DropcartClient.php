@@ -228,7 +228,7 @@ class DropcartClient {
 
 		} else if($request->hasParams())
 		{
-			$options['form_data'] = $request->getParams();
+			$options['form_params'] = $request->getParams();
 		}
 
 		// ACTUAL REQUEST
