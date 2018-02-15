@@ -1,3 +1,9 @@
+## 1.0.4 (February 15, 2018)
+  - Made sure POST data was send with request.
+  - Bump version to 1.0.2 → 1.0.3.
+  - Make sure remote contains user and password
+  - Bump version to 1.0.2 → 1.0.3.
+
 ## 1.0.3 (February 08, 2018)
 
 
