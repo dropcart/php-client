@@ -136,6 +136,13 @@ class DropcartClient {
 
 			return self::$current_call_stack->addParam($arguments[0], $arguments[1]);
 		}
+        elseif($name == 'getParams') {
+            return self::$current_call_stack->getParams();
+        }
+        elseif($name == 'hasParams')
+        {
+            return self::$current_call_stack->hasParams();
+        }
 		elseif($name == 'getUrl')
 		{
 			return self::$current_call_stack->getUrl(self::options()->getBaseUri());

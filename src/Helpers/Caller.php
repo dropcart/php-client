@@ -240,39 +240,41 @@ class Caller {
 		return $result;
 	}
 
-	/**
-	 * Build the URL based on the chain.
-	 *
-	 * @param string $base_url
-	 * @param bool   $withQuery
-	 *
-	 * @return string
-	 */
-	public function getUrl($base_url = '', $withQuery = true)
-	{
-		$url = $base_url;
-		foreach($this->loop() as $method => $arguments)
-		{
-			if(!in_array($method, $this->ignoreChain))
-				$url .= "/" . $method;
+    /**
+     * Build the URL based on the chain.
+     *
+     * @param string $base_url
+     * @param bool   $withQuery
+     *
+     * @return string
+     */
+    public function getUrl($base_url = '', $withQuery = true)
+    {
+        $url = $base_url;
+        foreach($this->loop() as $method => $arguments)
+        {
+            // Convert method to kebab-case
+            $method = Str::toKebabCase($method);
 
-			if(count($arguments) > 0)
-			{
-				foreach($arguments as $arg)
-				{
-					if(!is_array($arg))
-					{
-						$url .= "/" . $arg;
-					}
-				}
-			}
-		}
+            if(!in_array($method, $this->ignoreChain))
+                $url .= "/" . $method;
 
-		if(count($this->query) > 0 && $withQuery)
-			$url .= "?" . build_query($this->query);
+            if(count($arguments) > 0)
+            {
+                foreach($arguments as $arg)
+                {
+                    if(!is_array($arg)) {
+                        $url .= "/" . $arg;
+                    }
+                }
+            }
+        }
 
-		return $url;
-	}
+        if(count($this->query) > 0 && $withQuery)
+            $url .= "?" . build_query($this->query);
+
+        return $url;
+    }
 
 	/**
 	 * Get the parameters

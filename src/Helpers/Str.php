@@ -33,36 +33,59 @@ namespace Dropcart\PhpClient\Helpers;
 
 class Str {
 
-	/**
-	 * Convert a string to snake_case
-	 * @param $string
-	 *
-	 * @return string
-	 */
-	public static function toSnakeCase($string)
-	{
-		preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
-		$ret = $matches[0];
-		foreach ($ret as &$match) {
-			$match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
-		}
-		return implode('_', $ret);
-	}
+    /**
+     * Split a string by custom seperator
+     * @param $string
+     * @param $seperator
+     *
+     * @return string
+     */
+    public static function toSeperatorCase($string, $seperator)
+    {
+        preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
+        $ret = $matches[0];
+        foreach ($ret as &$match) {
+            $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+        }
+        return implode($seperator, $ret);
+    }
 
-	/**
-	 * Make a string CamelCase.
-	 *
-	 * @param      $string
-	 * @param bool $ucfirst Does the first letter needs to be uppercase. Default true.
-	 *
-	 * @return string
-	 */
-	public static function toCamelCase($string, $ucfirst = true)
-	{
-		$string = ucwords($string, " \t\r\n\f\v_");
-		if(!$ucfirst)
-			$string = lcfirst($string);
+    /**
+     * Converts a string to snake_case
+     * @param $string
+     *
+     * @return string
+     */
+    public static function toSnakeCase($string)
+    {
+        return static::toSeperatorCase($string, '_');
+    }
 
-		return str_replace([" ","\t","\r","\n","\f","\v","_"], '', $string);
-	}
+    /**
+     * Converts a string to kebab-case
+     * @param $string
+     *
+     * @return string
+     */
+    public static function toKebabCase($string)
+    {
+        return static::toSeperatorCase($string, '-');
+    }
+
+    /**
+     * Make a string CamelCase.
+     *
+     * @param      $string
+     * @param bool $ucfirst Does the first letter needs to be uppercase. Default true.
+     *
+     * @return string
+     */
+    public static function toCamelCase($string, $ucfirst = true)
+    {
+        $string = ucwords($string, " \t\r\n\f\v_");
+        if(!$ucfirst)
+            $string = lcfirst($string);
+
+        return str_replace([" ","\t","\r","\n","\f","\v","_"], '', $string);
+    }
 }
