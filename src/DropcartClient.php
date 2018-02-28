@@ -201,7 +201,7 @@ class DropcartClient {
 //		];
 
 		$base_url   = static::options()->getBaseUri();
-		$url        = $request->getUrl($base_url, false);
+		$url        = $request->getUrl($base_url, ($request->hasQuery() && $request->getHttpMethod() == 'GET'));
 
 		$options = [
 			'headers' => [
