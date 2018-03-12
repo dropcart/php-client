@@ -36,5 +36,5 @@ interface Order {
 	/**
 	 * @return Rest
 	 */
-	public function order() : Rest;
+	public function orders() : Rest;
 }
