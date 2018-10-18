@@ -1,3 +1,7 @@
+## 1.0.6 (October 18, 2018)
+  - Resolved bug where issued at time provided was out of sync.
+  - Bump version to 1.0.4 → 1.0.5.
+
 ## 1.0.5 (March 12, 2018)
   - Updated the Order interface for compatibility with the lastest update in the Dropcart REST API
   - Updated the request function to append query to URL if required.
