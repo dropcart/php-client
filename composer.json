@@ -9,6 +9,7 @@
     "lcobucci/jwt": "^3.2"
   },
   "require-dev": {
+    "ext-zip": "*",
     "phpunit/phpunit" : "~6.5"
   },
   "autoload": {
@@ -33,5 +34,9 @@
       "name": "Tom Kriek",
       "email": "tom@inktweb.nl"
     }
-  ]
+  ],
+  "scripts": {
+    "build-phar": "@php --define phar.readonly=0 build-phar.php --force",
+    "build-zip": "@php build-zip.php --force"
+  }
 }
