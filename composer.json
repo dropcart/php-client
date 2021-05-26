@@ -16,6 +16,11 @@
       "Dropcart\\PhpClient\\" : "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Dropcart\\PhpClient\\Tests\\Unit\\": "tests/unit/"
+    }
+  },
   "config": {
 
   },

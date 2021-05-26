@@ -31,8 +31,8 @@
 namespace Dropcart\PhpClient\Services;
 
 
-use Dropcart\StatefulEngine\Session;
-use Dropcart\StatefulEngine\StatefulEngine;
+use Dropcart\PhpClient\StatefulEngine\Session;
+use Dropcart\PhpClient\StatefulEngine\StatefulEngine;
 
 class ShoppingCart {
 
@@ -47,7 +47,7 @@ class ShoppingCart {
 		else if($statefulEngine instanceof StatefulEngine)
 			$this->statefulEngine = $statefulEngine;
 		else
-			throw \Exception("Stateful engine not supported");
+			throw new \Exception("Stateful engine not supported");
 
 
 		$this->readSession();
@@ -66,11 +66,12 @@ class ShoppingCart {
 	{
 		if(isset($this->cart[$product_id]))
 		{
-			return $this->updateSession($product_id, $quantity, $product_name, $product_description);
+			$this->updateSession();
+			return;
 		}
 
 		if(!is_int($quantity) || $quantity < 1)
-			throw \Exception("Quantity needs to be an integer and larger than zero.");
+			throw new \Exception("Quantity needs to be an integer and larger than zero.");
 
 		$this->cart[$product_id] = [
 			'id'    => $product_id,

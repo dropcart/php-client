@@ -8,61 +8,68 @@
  * Time: 10:29
  */
 
+namespace Dropcart\PhpClient\Tests\Unit;
 
 use Dropcart\PhpClient\DropcartClient;
+use Dropcart\PhpClient\DropcartClientException;
+use Exception;
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\TestCase;
 
-class DropcartClientFunctionalityTest extends \PHPUnit\Framework\TestCase {
+class DropcartClientFunctionalityTest extends TestCase
+{
 
-	protected static $config;
+    protected static $config;
 
-	public function setUp()
-	{
-		if(file_exists(__DIR__ . '/config.php'))
-			self::$config = include(__DIR__ . '/config.php');
-		else
-			throw new Exception("Config needs to be set.");
-	}
+    public function setUp()
+    {
+        if (file_exists(__DIR__ . '/config.php')) {
+            self::$config = include(__DIR__ . '/config.php');
+        } else {
+            throw new Exception("Config needs to be set.");
+        }
+    }
 
-	public function testStaticInitialisation()
-	{
-		$this->assertInstanceOf(DropcartClient::class, DropcartClient::getInstance());
-	}
+    public function testStaticInitialisation()
+    {
+        $this->assertInstanceOf(DropcartClient::class, DropcartClient::getInstance());
+    }
 
-	public function testGettingErrorWithoutPublicAndOrPrivateKey()
-	{
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
-		$this->expectExceptionMessage("Public and/or private key are not set.");
+    public function testGettingErrorWithoutPublicAndOrPrivateKey()
+    {
+        $this->expectException(DropcartClientException::class);
+        $this->expectExceptionMessage("Public and/or private key are not set.");
 
-		// Trigger
-		DropcartClient::catalog()->brands()->get();
-	}
+        // Trigger
+        DropcartClient::catalog()->brands()->get();
+    }
 
-	public function testCallingServiceGetCaller()
-	{
-		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog());
-	}
+    public function testCallingServiceGetCaller()
+    {
+        $this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog());
+    }
 
-	public function testCallingServiceGetMethod()
-	{
-		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog()->products());
-	}
+    public function testCallingServiceGetMethod()
+    {
+        $this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog()->products());
+    }
 
-	public function testCallingNotExistingHttpMethod()
-	{
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
-		$this->expectExceptionMessageRegExp("/HTTP method \[test\] doesn't exist on \'.*\'/");
+    public function testCallingNotExistingHttpMethod()
+    {
+        $this->expectException(DropcartClientException::class);
+        $this->expectExceptionMessageRegExp("/HTTP method \[test\] doesn't exist on \'.*\'/");
 
-		DropcartClient::catalog()->products()->test();
-	}
+        DropcartClient::catalog()->products()->test();
+    }
 
-	public function testCallingServiceGetResult()
-	{
-		DropcartClient::setPublicKey("test123");
-		DropcartClient::setPrivateKey("test123");
-		DropcartClient::options()->set('verify', false);
+    public function testCallingServiceGetResult()
+    {
+        DropcartClient::setPublicKey("test123");
+        DropcartClient::setPrivateKey("test123");
+        DropcartClient::options()->set('verify', false);
 
-		$this->assertInstanceOf(\GuzzleHttp\Psr7\Response::class, DropcartClient::catalog()->products()->get());
-	}
+        $this->assertInstanceOf(Response::class, DropcartClient::catalog()->products()->get());
+    }
 
 
 }
