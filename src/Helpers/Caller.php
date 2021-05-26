@@ -32,7 +32,7 @@ namespace Dropcart\PhpClient\Helpers;
 
 
 use Dropcart\PhpClient\DropcartClientException;
-use Dropcart\PhpClient\Services\Management;
+
 use function GuzzleHttp\Psr7\build_query;
 
 /**

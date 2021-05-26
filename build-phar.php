@@ -1,4 +1,5 @@
 <?php
+
 /**
  * =========================================================
  *                        DROPCART
@@ -26,7 +27,6 @@
  *
  * =========================================================
  */
- 
 
 $buildDir = __DIR__ . '/build';
 $srcDir = __DIR__;
@@ -37,7 +37,7 @@ if(file_exists($buildDir . '/DropcartPhpClient.phar') && !$force)
 {
 	die('Phar exists already. Use -f or --force flag to override.' . "\n");
 }
-unlink($buildDir . '/DropcartPhpClient.phar');
+@unlink($buildDir . '/DropcartPhpClient.phar');
 $phar = new Phar($buildDir . '/DropcartPhpClient.phar',
 				FilesystemIterator::CURRENT_AS_FILEINFO |
 						FilesystemIterator::KEY_AS_FILENAME, "dropcart-php-client");

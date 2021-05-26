@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ---------------------------------------------------
  * Created by Jason de Ridder <mail@deargonauten.com>.
@@ -8,23 +9,26 @@
  * Time: 10:52
  */
 
-require __DIR__ . '/../../vendor/autoload.php';
+namespace Dropcart\PhpClient\Tests\Unit;
 
 use Dropcart\PhpClient\DropcartClient;
+use Dropcart\PhpClient\DropcartClientException;
+use Dropcart\PhpClient\DropcartClientOptions;
+use Dropcart\PhpClient\Helpers\Caller;
 use PHPUnit\Framework\TestCase;
 
 class DropcartClientTest extends TestCase {
 
 	public function test__callStatic() {
-		$this->assertInstanceOf(\Dropcart\PhpClient\DropcartClientOptions::class, DropcartClient::setOption('test', 'test'));
+		$this->assertInstanceOf(DropcartClientOptions::class, DropcartClient::setOption('test', 'test'));
 		$this->assertEquals('test', DropcartClient::getOption('test', 'test'));
 
 		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog());
 	}
 
 	public function test__call() {
-		$this->assertInstanceOf(\Dropcart\PhpClient\Helpers\Caller::class, DropcartClient::catalog()->addParam('test', 'test'));
-		$this->assertInstanceOf(\Dropcart\PhpClient\Helpers\Caller::class, DropcartClient::catalog()->addParams(['test' => 'test']));
+		$this->assertInstanceOf(Caller::class, DropcartClient::catalog()->addParam('test', 'test'));
+		$this->assertInstanceOf(Caller::class, DropcartClient::catalog()->addParams(['test' => 'test']));
 
 		$this->assertEquals('https://rest-api.dropcart.nl', DropcartClient::options()->getBaseUri());
 
@@ -34,7 +38,7 @@ class DropcartClientTest extends TestCase {
 	public function testPostEndpointOnServiceException()
 	{
 		$this->expectExceptionMessageRegExp("/Method \[post\] doesn't exists on \'.*\'/");
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
+		$this->expectException(DropcartClientException::class);
 
 		DropcartClient::catalog()->post();
 	}
@@ -42,7 +46,7 @@ class DropcartClientTest extends TestCase {
 	public function testPutEndpointOnServiceException()
 	{
 		$this->expectExceptionMessageRegExp("/Method \[put\] doesn't exists on \'.*\'/");
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
+		$this->expectException(DropcartClientException::class);
 
 		DropcartClient::catalog()->put();
 	}
@@ -50,7 +54,7 @@ class DropcartClientTest extends TestCase {
 	public function testGetEndpointOnServiceException()
 	{
 		$this->expectExceptionMessageRegExp("/Method \[get\] doesn't exists on \'.*\'/");
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
+		$this->expectException(DropcartClientException::class);
 
 		DropcartClient::catalog()->get();
 	}
@@ -58,7 +62,7 @@ class DropcartClientTest extends TestCase {
 	public function testPatchEndpointOnServiceException()
 	{
 		$this->expectExceptionMessageRegExp("/Method \[patch\] doesn't exists on \'.*\'/");
-		$this->expectException(\Dropcart\PhpClient\DropcartClientException::class);
+		$this->expectException(DropcartClientException::class);
 
 		DropcartClient::catalog()->patch();
 	}
@@ -75,7 +79,7 @@ class DropcartClientTest extends TestCase {
 	}
 
 	public function testOptions() {
-		$this->assertInstanceOf(\Dropcart\PhpClient\DropcartClientOptions::class, DropcartClient::options());
+		$this->assertInstanceOf(DropcartClientOptions::class, DropcartClient::options());
 	}
 
 	public function testSetResult() {
@@ -94,7 +98,7 @@ class DropcartClientTest extends TestCase {
 
 	public function testOrder() {
 		$this->assertInstanceOf(DropcartClient::class, DropcartClient::order());
-		$this->assertInstanceOf(DropcartClient::class, DropcartClient::order()->order());
+		$this->assertInstanceOf(DropcartClient::class, DropcartClient::order()->orders());
 
 	}
 
@@ -118,10 +122,10 @@ class DropcartClientTest extends TestCase {
 	}
 
 	public function testSetPublicKey() {
-		$this->assertInstanceOf(\Dropcart\PhpClient\DropcartClientOptions::class, DropcartClient::setPublicKey("test"));
+		$this->assertInstanceOf(DropcartClientOptions::class, DropcartClient::setPublicKey("test"));
 	}
 
 	public function testSetPrivateKey() {
-		$this->assertInstanceOf(\Dropcart\PhpClient\DropcartClientOptions::class, DropcartClient::setPrivateKey("test"));
+		$this->assertInstanceOf(DropcartClientOptions::class, DropcartClient::setPrivateKey("test"));
 	}
 }
