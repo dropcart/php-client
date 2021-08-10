@@ -40,11 +40,10 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\FulfilledPromise;
 use GuzzleHttp\Promise\Promise;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\RequestOptions;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Psr\Http\Message\ResponseInterface;
+use Lcobucci\JWT\Signer\Key;
 
 
 /**
@@ -296,12 +295,12 @@ class DropcartClient {
 
 	    $url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-		return  (new Builder())->setIssuer(static::options()->getPublicKey())
-								->setAudience(static::options()->getUrl($url))
-								->setExpiration(time() + 60) // Max time is 1,5 minutes (see line below)
-								->setIssuedAt(time() - 30) // Set issues at time() - 30 sec for minor server time out of synch correction
-								->sign((new Sha256()), static::options()->getPrivateKey())
-								->getToken();
+        return (new Builder())
+            ->issuedBy(static::options()->getPublicKey())
+            ->permittedFor(static::options()->getUrl($url))
+            ->expiresAt(new \DateTimeImmutable("+60 seconds")) // Max time is 1,5 minutes (see line below)
+            ->issuedAt(new \DateTimeImmutable("-30 seconds")) // Set issues at time() - 30 sec for minor server time out of sync correction
+            ->getToken(new Sha256(), Key\InMemory::plainText(static::options()->getPrivateKey()));
 	}
 
 	/**

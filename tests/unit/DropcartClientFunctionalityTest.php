@@ -21,7 +21,7 @@ class DropcartClientFunctionalityTest extends TestCase
 
     protected static $config;
 
-    public function setUp()
+    protected function setUp(): void
     {
         if (file_exists(__DIR__ . '/config.php')) {
             self::$config = include(__DIR__ . '/config.php');
@@ -57,8 +57,9 @@ class DropcartClientFunctionalityTest extends TestCase
     public function testCallingNotExistingHttpMethod()
     {
         $this->expectException(DropcartClientException::class);
-        $this->expectExceptionMessageRegExp("/HTTP method \[test\] doesn't exist on \'.*\'/");
+        $this->expectExceptionMessageMatches("/HTTP method \[test\] doesn't exist on \'.*\'/");
 
+        /** @noinspection PhpUndefinedMethodInspection */
         DropcartClient::catalog()->products()->test();
     }
 
@@ -70,6 +71,4 @@ class DropcartClientFunctionalityTest extends TestCase
 
         $this->assertInstanceOf(Response::class, DropcartClient::catalog()->products()->get());
     }
-
-
 }
