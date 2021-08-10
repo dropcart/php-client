@@ -26,7 +26,8 @@ class DropcartClientTest extends TestCase {
 		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog());
 	}
 
-	public function test__call() {
+    /** @noinspection PhpUndefinedMethodInspection */
+    public function test__call() {
 		$this->assertInstanceOf(Caller::class, DropcartClient::catalog()->addParam('test', 'test'));
 		$this->assertInstanceOf(Caller::class, DropcartClient::catalog()->addParams(['test' => 'test']));
 
@@ -37,41 +38,46 @@ class DropcartClientTest extends TestCase {
 
 	public function testPostEndpointOnServiceException()
 	{
-		$this->expectExceptionMessageRegExp("/Method \[post\] doesn't exists on \'.*\'/");
+		$this->expectExceptionMessageMatches("/Method \[post\] doesn't exists on \'.*\'/");
 		$this->expectException(DropcartClientException::class);
 
-		DropcartClient::catalog()->post();
+        /** @noinspection PhpUndefinedMethodInspection */
+        DropcartClient::catalog()->post();
 	}
 
 	public function testPutEndpointOnServiceException()
 	{
-		$this->expectExceptionMessageRegExp("/Method \[put\] doesn't exists on \'.*\'/");
+		$this->expectExceptionMessageMatches("/Method \[put\] doesn't exists on \'.*\'/");
 		$this->expectException(DropcartClientException::class);
 
-		DropcartClient::catalog()->put();
+        /** @noinspection PhpUndefinedMethodInspection */
+        DropcartClient::catalog()->put();
 	}
 
 	public function testGetEndpointOnServiceException()
 	{
-		$this->expectExceptionMessageRegExp("/Method \[get\] doesn't exists on \'.*\'/");
+		$this->expectExceptionMessageMatches("/Method \[get\] doesn't exists on \'.*\'/");
 		$this->expectException(DropcartClientException::class);
 
-		DropcartClient::catalog()->get();
+        /** @noinspection PhpUndefinedMethodInspection */
+        DropcartClient::catalog()->get();
 	}
 
 	public function testPatchEndpointOnServiceException()
 	{
-		$this->expectExceptionMessageRegExp("/Method \[patch\] doesn't exists on \'.*\'/");
+		$this->expectExceptionMessageMatches("/Method \[patch\] doesn't exists on \'.*\'/");
 		$this->expectException(DropcartClientException::class);
 
-		DropcartClient::catalog()->patch();
+        /** @noinspection PhpUndefinedMethodInspection */
+        DropcartClient::catalog()->patch();
 	}
 
 
 	public function testDeleteEndpointOnServiceException()
 	{
-		$this->expectExceptionMessageRegExp("/Method \[delete\] doesn't exists on \'.*\'/");
-		$this->expectException(DropcartClient::catalog()->delete());
+		$this->expectExceptionMessageMatches("/Method \[delete\] doesn't exists on \'.*\'/");
+        /** @noinspection PhpUndefinedMethodInspection */
+        $this->expectException(DropcartClient::catalog()->delete());
 	}
 
 	public function testGetInstance() {
@@ -92,8 +98,9 @@ class DropcartClientTest extends TestCase {
 		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog()->categories());
 		$this->assertInstanceOf(DropcartClient::class, DropcartClient::catalog()->products());
 
-		$this->expectExceptionMessageRegExp("/Method \[.*\] doesn't exists on \'.*\'/");
-		DropcartClient::catalog()->nonExisting();
+		$this->expectExceptionMessageMatches("/Method \[.*\] doesn't exists on \'.*\'/");
+        /** @noinspection PhpUndefinedMethodInspection */
+        DropcartClient::catalog()->nonExisting();
 	}
 
 	public function testOrder() {

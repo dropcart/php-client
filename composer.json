@@ -4,13 +4,13 @@
   "type": "library",
   "license": "MIT",
   "require": {
-    "php": "^7.0",
-    "guzzlehttp/guzzle": "~6.0",
+    "php": "^7.1",
+    "guzzlehttp/guzzle": "^6.0 || ^7.0",
     "lcobucci/jwt": "^3.2"
   },
   "require-dev": {
     "ext-zip": "*",
-    "phpunit/phpunit" : "~6.5"
+    "phpunit/phpunit" : "^9.5"
   },
   "autoload": {
     "psr-4" : {
