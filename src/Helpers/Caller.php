@@ -27,13 +27,10 @@
  * =========================================================
  */
 
-
 namespace Dropcart\PhpClient\Helpers;
 
-
 use Dropcart\PhpClient\DropcartClientException;
-
-use function GuzzleHttp\Psr7\build_query;
+use GuzzleHttp\Psr7\Query;
 
 /**
  * Class Caller
@@ -271,7 +268,7 @@ class Caller {
         }
 
         if(count($this->query) > 0 && $withQuery)
-            $url .= "?" . build_query($this->query);
+            $url .= "?" . Query::build($this->query);
 
         return $url;
     }
@@ -299,7 +296,7 @@ class Caller {
 	 */
 	public function getQueryString()
 	{
-		return build_query($this->query);
+		return Query::build($this->query);
 	}
 
 	/**
