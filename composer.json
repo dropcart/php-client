@@ -10,7 +10,9 @@
   },
   "require-dev": {
     "ext-zip": "*",
-    "phpunit/phpunit" : "^9.5"
+    "phpunit/phpunit" : "^9.5",
+    "squizlabs/php_codesniffer": "*",
+    "phpcompatibility/php-compatibility": "*"
   },
   "autoload": {
     "psr-4" : {
@@ -37,6 +39,9 @@
   ],
   "scripts": {
     "build-phar": "@php --define phar.readonly=0 bin/build-phar.php --force",
-    "build-zip": "@php bin/build-zip.php --force"
+    "build-zip": "@php bin/build-zip.php --force",
+    "phpcompat": [
+      "vendor/bin/phpcs -s -p --standard=phpcs-phpcompat.xml"
+    ]
   }
 }
