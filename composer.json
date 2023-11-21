@@ -36,7 +36,7 @@
     }
   ],
   "scripts": {
-    "build-phar": "@php --define phar.readonly=0 build-phar.php --force",
-    "build-zip": "@php build-zip.php --force"
+    "build-phar": "@php --define phar.readonly=0 bin/build-phar.php --force",
+    "build-zip": "@php bin/build-zip.php --force"
   }
 }
